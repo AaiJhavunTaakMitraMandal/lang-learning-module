@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monthly Language Learning Module</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #ffffff; --bg2: #f5f5f4; --bg3: #eeece6;
+      --text: #1a1a18; --text2: #5f5e5a; --text3: #888780;
+      --border: rgba(0,0,0,0.12); --border2: rgba(0,0,0,0.22);
+      --green: #1D9E75; --green-light: #E1F5EE; --green-mid: #5DCAA5; --green-dark: #0F6E56;
+      --radius: 10px; --radius-lg: 14px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1e1e1c; --bg2: #2a2a28; --bg3: #333330;
+        --text: #f0ede6; --text2: #a09e98; --text3: #706e68;
+        --border: rgba(255,255,255,0.10); --border2: rgba(255,255,255,0.20);
+      }
+    }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 2rem 1rem; }
+    .container { max-width: 880px; margin: 0 auto; }
+    header { margin-bottom: 2rem; }
+    header h1 { font-size: 26px; font-weight: 600; }
+    header p { font-size: 14px; color: var(--text2); margin-top: 6px; }
+    .progress-wrap { background: var(--bg2); border-radius: 999px; height: 6px; margin: 1rem 0 4px; }
+    .progress-fill { height: 6px; border-radius: 999px; background: var(--green); transition: width 0.5s ease; }
+    .progress-label { font-size: 12px; color: var(--text3); }
+    .month-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.5rem; }
+    .month-btn { font-size: 12px; padding: 5px 13px; border-radius: 999px; border: 0.5px solid var(--border2); background: var(--bg); color: var(--text2); cursor: pointer; transition: all 0.15s; }
+    .month-btn:hover { background: var(--bg2); color: var(--text); }
+    .month-btn.active { background: var(--green); border-color: var(--green); color: #fff; }
+    .month-btn.done { background: var(--green-light); border-color: var(--green-mid); color: var(--green-dark); }
+    @media (prefers-color-scheme: dark) {
+      .month-btn.done { background: #085041; border-color: #1D9E75; color: #9FE1CB; }
+    }
+    .card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1rem; }
+    .lang-header { display: flex; align-items: center; gap: 14px; margin-bottom: 1.25rem; }
+    .lang-icon { width: 48px; height: 48px; border-radius: var(--radius); background: var(--bg2); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+    .lang-meta h2 { font-size: 20px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    .lang-meta p { font-size: 13px; color: var(--text2); margin-top: 3px; }
+    .badge { display: inline-block; font-size: 11px; padding: 2px 9px; border-radius: var(--radius); font-weight: 500; }
+    .badge-beginner { background: #E1F5EE; color: #0F6E56; }
+    .badge-intermediate { background: #FAEEDA; color: #633806; }
+    .badge-advanced { background: #FBEAF0; color: #72243E; }
+    @media (prefers-color-scheme: dark) {
+      .badge-beginner { background: #085041; color: #9FE1CB; }
+      .badge-intermediate { background: #412402; color: #FAC775; }
+      .badge-advanced { background: #4B1528; color: #F4C0D1; }
+    }
+    .weeks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 1.25rem; }
+    @media (max-width: 520px) { .weeks { grid-template-columns: 1fr; } }
+    .week { border: 0.5px solid var(--border); border-radius: var(--radius); padding: 0.85rem; cursor: pointer; transition: all 0.15s; user-select: none; }
+    .week:hover { background: var(--bg2); }
+    .week.completed { border-color: var(--green-mid); background: var(--green-light); }
+    @media (prefers-color-scheme: dark) { .week.completed { background: #04342C; border-color: #1D9E75; } }
+    .week-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    .week-label { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text3); }
+    .week.completed .week-label { color: var(--green-dark); }
+    .check { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--border2); display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--green); }
+    .check.done { background: var(--green); border-color: var(--green); color: #fff; }
+    .week-title { font-size: 13px; font-weight: 500; color: var(--text); }
+    .week-tasks { font-size: 12px; color: var(--text2); margin-top: 3px; line-height: 1.4; }
+    .section-title { font-size: 13px; font-weight: 500; color: var(--text2); margin-bottom: 8px; }
+    .resource-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.25rem; }
+    .resource-tag { font-size: 12px; padding: 4px 12px; border-radius: 999px; border: 0.5px solid var(--border); color: var(--text2); cursor: default; }
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn { font-size: 13px; padding: 8px 16px; border-radius: var(--radius); border: 0.5px solid var(--border2); background: var(--bg); color: var(--text); cursor: pointer; transition: all 0.15s; }
+    .btn:hover { background: var(--bg2); }
+    .btn-primary { background: var(--green); border-color: var(--green); color: #fff; }
+    .btn-primary:hover { background: var(--green-dark); }
+    .note { font-size: 13px; color: var(--text2); background: var(--bg2); border-radius: var(--radius); padding: 10px 14px; margin-top: 1rem; border-left: 3px solid var(--green); }
+    .stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; margin-bottom: 1.5rem; }
+    .stat { background: var(--bg2); border-radius: var(--radius); padding: 0.85rem 1rem; }
+    .stat-val { font-size: 22px; font-weight: 600; }
+    .stat-lbl { font-size: 12px; color: var(--text3); margin-top: 2px; }
+    .github-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text3); margin-top: 1.5rem; padding: 6px 12px; border-radius: 999px; border: 0.5px solid var(--border); }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>📚 Monthly language learning module</h1>
+    <p>One programming language per month — 4 structured weeks, curated resources, and project ideas.</p>
+    <div class="progress-wrap"><div class="progress-fill" id="mainProg" style="width:0%"></div></div>
+    <div class="progress-label" id="progLabel">Loading…</div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-val" id="statMonths">0</div><div class="stat-lbl">Months started</div></div>
+    <div class="stat"><div class="stat-val" id="statWeeks">0</div><div class="stat-lbl">Weeks done</div></div>
+    <div class="stat"><div class="stat-val" id="statPct">0%</div><div class="stat-lbl">Progress</div></div>
+  </div>
+
+  <div class="month-nav" id="monthNav"></div>
+  <div id="content"></div>
+
+  <div class="github-badge">
+    ⭐ Tip: bookmark this file and open it locally — progress is saved in localStorage
+  </div>
+</div>
+
+<script>
+const curriculum = [
+  { month: 1, lang: "Python", icon: "🐍", level: "beginner", tagline: "The perfect first language — clean syntax, endless uses.",
+    weeks: [
+      { title: "Syntax & data types", tasks: "Variables, strings, lists, dicts, loops" },
+      { title: "Functions & modules", tasks: "def, imports, scope, built-in libs" },
+      { title: "OOP basics", tasks: "Classes, inheritance, dunder methods" },
+      { title: "Project week", tasks: "Build a CLI todo app or web scraper" }
+    ],
+    resources: ["Python Docs", "Real Python", "Automate the Boring Stuff", "LeetCode easy"] },
+  { month: 2, lang: "JavaScript", icon: "🌐", level: "beginner", tagline: "The language of the web — front-end and back-end.",
+    weeks: [
+      { title: "Core JS & DOM", tasks: "let/const, arrow fns, events, fetch" },
+      { title: "Async patterns", tasks: "Promises, async/await, callbacks" },
+      { title: "Node.js basics", tasks: "npm, modules, file system, Express intro" },
+      { title: "Project week", tasks: "Build a REST API or interactive web page" }
+    ],
+    resources: ["MDN Web Docs", "javascript.info", "Node.js Docs", "Frontend Mentor"] },
+  { month: 3, lang: "TypeScript", icon: "🔷", level: "intermediate", tagline: "Strongly-typed JavaScript for scalable codebases.",
+    weeks: [
+      { title: "Types & interfaces", tasks: "Primitives, union types, type narrowing" },
+      { title: "Generics & utilities", tasks: "Generic fns, Partial, Pick, Omit" },
+      { title: "TS with Node/React", tasks: "tsconfig, strict mode, typing props" },
+      { title: "Project week", tasks: "Refactor a JS project to TypeScript" }
+    ],
+    resources: ["TypeScript Handbook", "Total TypeScript", "Matt Pocock's tips", "TS Playground"] },
+  { month: 4, lang: "Rust", icon: "⚙️", level: "intermediate", tagline: "Memory-safe systems programming without a GC.",
+    weeks: [
+      { title: "Ownership model", tasks: "Borrow checker, lifetimes, moves" },
+      { title: "Structs & enums", tasks: "impl blocks, pattern matching, Option/Result" },
+      { title: "Traits & generics", tasks: "trait objects, impl Trait, error handling" },
+      { title: "Project week", tasks: "Build a file parser or CLI tool" }
+    ],
+    resources: ["The Rust Book", "Rustlings", "Exercism Rust", "Jon Gjengset YT"] },
+  { month: 5, lang: "Go", icon: "🐹", level: "intermediate", tagline: "Simple, fast, concurrent — built for cloud infrastructure.",
+    weeks: [
+      { title: "Go basics", tasks: "Types, slices, maps, defer, errors" },
+      { title: "Goroutines & channels", tasks: "Concurrency model, WaitGroups, select" },
+      { title: "HTTP & APIs", tasks: "net/http, JSON, middleware patterns" },
+      { title: "Project week", tasks: "Build a concurrent HTTP server" }
+    ],
+    resources: ["Tour of Go", "Go by Example", "Effective Go", "Gopher Academy"] },
+  { month: 6, lang: "SQL", icon: "🗄️", level: "beginner", tagline: "Query and manage data — essential for every developer.",
+    weeks: [
+      { title: "SELECT & filtering", tasks: "WHERE, ORDER BY, LIMIT, LIKE, IN" },
+      { title: "Joins & aggregates", tasks: "INNER/LEFT JOIN, GROUP BY, HAVING" },
+      { title: "Schema design", tasks: "Normalization, constraints, indexes" },
+      { title: "Project week", tasks: "Design and query a multi-table database" }
+    ],
+    resources: ["SQLZoo", "Mode SQL Tutorial", "PostgreSQL Docs", "pgexercises.com"] },
+  { month: 7, lang: "Kotlin", icon: "🎯", level: "intermediate", tagline: "Modern JVM language — pragmatic and concise.",
+    weeks: [
+      { title: "Kotlin fundamentals", tasks: "val/var, data classes, null safety" },
+      { title: "Functional style", tasks: "Lambdas, extensions, collections API" },
+      { title: "Coroutines", tasks: "suspend fns, launch, async, Flow" },
+      { title: "Project week", tasks: "Build an Android screen or backend API" }
+    ],
+    resources: ["Kotlin Docs", "Kotlin Koans", "Android Basics", "KotlinConf talks"] },
+  { month: 8, lang: "Haskell", icon: "λ", level: "advanced", tagline: "Pure functional programming — reshape how you think.",
+    weeks: [
+      { title: "Pure functions & types", tasks: "Immutability, type inference, pattern match" },
+      { title: "Functors & monads", tasks: "Maybe, IO, do-notation" },
+      { title: "Lazy evaluation", tasks: "Infinite lists, thunks, strictness" },
+      { title: "Project week", tasks: "Build a parser combinator or CLI app" }
+    ],
+    resources: ["Learn You a Haskell", "Haskell Book", "Advent of Code in HS", "HaskellWiki"] },
+  { month: 9, lang: "C", icon: "🔬", level: "advanced", tagline: "The foundation of modern computing. Go low-level.",
+    weeks: [
+      { title: "Memory & pointers", tasks: "malloc, free, pointer arithmetic" },
+      { title: "Structs & arrays", tasks: "Stack vs heap, sizeof, casting" },
+      { title: "File I/O & processes", tasks: "fopen, fork, pipes, signals" },
+      { title: "Project week", tasks: "Build a shell or memory allocator" }
+    ],
+    resources: ["CS50", "Beej's C Guide", "K&R C book", "CodeSignal C track"] },
+  { month: 10, lang: "Swift", icon: "🦅", level: "intermediate", tagline: "Apple's language for iOS, macOS & beyond.",
+    weeks: [
+      { title: "Swift syntax", tasks: "Optionals, guard, closures, protocols" },
+      { title: "SwiftUI basics", tasks: "Views, state, bindings, navigation" },
+      { title: "Combine & async", tasks: "async/await, Publishers, ObservableObject" },
+      { title: "Project week", tasks: "Build a working iOS screen" }
+    ],
+    resources: ["Swift.org Tour", "Hacking with Swift", "SwiftUI tutorials", "100 Days of Swift"] },
+  { month: 11, lang: "Elixir", icon: "💧", level: "advanced", tagline: "Fault-tolerant, distributed systems on the BEAM VM.",
+    weeks: [
+      { title: "Functional Elixir", tasks: "Immutability, pipe operator, pattern match" },
+      { title: "Processes & OTP", tasks: "GenServer, Supervisor, PubSub" },
+      { title: "Phoenix framework", tasks: "Channels, LiveView, Ecto" },
+      { title: "Project week", tasks: "Build a real-time Phoenix LiveView app" }
+    ],
+    resources: ["Elixir School", "Programming Elixir book", "Exercism Elixir", "ElixirConf"] },
+  { month: 12, lang: "Assembly (x86)", icon: "⚡", level: "advanced", tagline: "The final boss — talk directly to the CPU.",
+    weeks: [
+      { title: "Registers & memory", tasks: "MOV, LEA, stack frames, calling conventions" },
+      { title: "Arithmetic & control", tasks: "ADD, SUB, JMP, CMP, conditional jumps" },
+      { title: "System calls", tasks: "Linux syscalls, interrupts, libc bridge" },
+      { title: "Project week", tasks: "Write a Hello World and simple calculator" }
+    ],
+    resources: ["x86 NASM Tutorial", "OSDev wiki", "CS:APP book", "Godbolt.org"] },
+];
+
+let currentMonth = 1;
+let completed = {};
+try { completed = JSON.parse(localStorage.getItem('lang_module_v1') || '{}'); } catch(e){}
+
+function save() {
+  try { localStorage.setItem('lang_module_v1', JSON.stringify(completed)); } catch(e){}
+}
+
+function completedWeeks() { return Object.values(completed).flat().length; }
+function monthsStarted() { return Object.keys(completed).filter(k => completed[k].length > 0).length; }
+
+function render() {
+  const nav = document.getElementById('monthNav');
+  nav.innerHTML = curriculum.map(c => {
+    const mkey = `m${c.month}`;
+    const done = (completed[mkey] || []).length === 4;
+    const active = currentMonth === c.month;
+    return `<button class="month-btn ${active ? 'active' : done ? 'done' : ''}" onclick="go(${c.month})">${c.lang}</button>`;
+  }).join('');
+
+  const cw = completedWeeks();
+  const pct = Math.round((cw / (curriculum.length * 4)) * 100);
+  document.getElementById('mainProg').style.width = pct + '%';
+  document.getElementById('progLabel').textContent = `Month ${currentMonth} of 12 • ${cw} of 48 weeks completed`;
+  document.getElementById('statMonths').textContent = monthsStarted();
+  document.getElementById('statWeeks').textContent = cw;
+  document.getElementById('statPct').textContent = pct + '%';
+
+  const cur = curriculum[currentMonth - 1];
+  const mkey = `m${cur.month}`;
+  const mDone = completed[mkey] || [];
+  const levelClass = { beginner: 'badge-beginner', intermediate: 'badge-intermediate', advanced: 'badge-advanced' }[cur.level];
+
+  document.getElementById('content').innerHTML = `
+    <div class="card">
+      <div class="lang-header">
+        <div class="lang-icon">${cur.icon}</div>
+        <div class="lang-meta">
+          <h2>${cur.lang} <span class="badge ${levelClass}">${cur.level}</span></h2>
+          <p>${cur.tagline}</p>
+        </div>
+      </div>
+      <div class="weeks">
+        ${cur.weeks.map((w, i) => {
+          const done = mDone.includes(i);
+          return `<div class="week ${done ? 'completed' : ''}" onclick="toggleWeek(${cur.month}, ${i})">
+            <div class="week-header">
+              <span class="week-label">Week ${i + 1}</span>
+              <span class="check ${done ? 'done' : ''}">${done ? '✓' : ''}</span>
+            </div>
+            <div class="week-title">${w.title}</div>
+            <div class="week-tasks">${w.tasks}</div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="section-title">Resources</div>
+      <div class="resource-list">
+        ${cur.resources.map(r => `<span class="resource-tag">${r}</span>`).join('')}
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary" onclick="window.open('https://claude.ai','_blank')">Ask Claude for a project idea</button>
+        ${cur.month < 12 ? `<button class="btn" onclick="go(${cur.month + 1})">Next month →</button>` : ''}
+        <button class="btn" onclick="resetMonth(${cur.month})">Reset month</button>
+      </div>
+      ${mDone.length === 4 ? `<div class="note">🎉 Month ${cur.month} complete! You've finished all 4 weeks of ${cur.lang}.</div>` : ''}
+    </div>
+  `;
+}
+
+function go(m) { currentMonth = m; render(); }
+
+function toggleWeek(month, week) {
+  const mkey = `m${month}`;
+  if (!completed[mkey]) completed[mkey] = [];
+  const idx = completed[mkey].indexOf(week);
+  if (idx === -1) completed[mkey].push(week);
+  else completed[mkey].splice(idx, 1);
+  save(); render();
+}
+
+function resetMonth(month) {
+  const mkey = `m${month}`;
+  completed[mkey] = [];
+  save(); render();
+}
+
+render();
+</script>
+</body>
+</html>
