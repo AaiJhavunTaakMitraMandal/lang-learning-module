@@ -104,7 +104,7 @@
 
 <script>
 const curriculum = [
-  { month: 1, lang: "Python", icon: "🐍", level: "beginner", tagline: "The perfect first language — clean syntax, endless uses.",
+  { month: April, lang: "Python", icon: "🐍", level: "beginner", tagline: "The perfect first language — clean syntax, endless uses.",
     weeks: [
       { title: "Syntax & data types", tasks: "Variables, strings, lists, dicts, loops" },
       { title: "Functions & modules", tasks: "def, imports, scope, built-in libs" },
@@ -112,7 +112,7 @@ const curriculum = [
       { title: "Project week", tasks: "Build a CLI todo app or web scraper" }
     ],
     resources: ["Python Docs", "Real Python", "Automate the Boring Stuff", "LeetCode easy"] },
-  { month: 2, lang: "JavaScript", icon: "🌐", level: "beginner", tagline: "The language of the web — front-end and back-end.",
+  { month: May, lang: "JavaScript", icon: "🌐", level: "beginner", tagline: "The language of the web — front-end and back-end.",
     weeks: [
       { title: "Core JS & DOM", tasks: "let/const, arrow fns, events, fetch" },
       { title: "Async patterns", tasks: "Promises, async/await, callbacks" },
@@ -120,7 +120,7 @@ const curriculum = [
       { title: "Project week", tasks: "Build a REST API or interactive web page" }
     ],
     resources: ["MDN Web Docs", "javascript.info", "Node.js Docs", "Frontend Mentor"] },
-  { month: 3, lang: "TypeScript", icon: "🔷", level: "intermediate", tagline: "Strongly-typed JavaScript for scalable codebases.",
+  { month: June, lang: "TypeScript", icon: "🔷", level: "intermediate", tagline: "Strongly-typed JavaScript for scalable codebases.",
     weeks: [
       { title: "Types & interfaces", tasks: "Primitives, union types, type narrowing" },
       { title: "Generics & utilities", tasks: "Generic fns, Partial, Pick, Omit" },
@@ -128,7 +128,7 @@ const curriculum = [
       { title: "Project week", tasks: "Refactor a JS project to TypeScript" }
     ],
     resources: ["TypeScript Handbook", "Total TypeScript", "Matt Pocock's tips", "TS Playground"] },
-  { month: 4, lang: "Rust", icon: "⚙️", level: "intermediate", tagline: "Memory-safe systems programming without a GC.",
+  { month: July, lang: "Rust", icon: "⚙️", level: "intermediate", tagline: "Memory-safe systems programming without a GC.",
     weeks: [
       { title: "Ownership model", tasks: "Borrow checker, lifetimes, moves" },
       { title: "Structs & enums", tasks: "impl blocks, pattern matching, Option/Result" },
@@ -136,7 +136,7 @@ const curriculum = [
       { title: "Project week", tasks: "Build a file parser or CLI tool" }
     ],
     resources: ["The Rust Book", "Rustlings", "Exercism Rust", "Jon Gjengset YT"] },
-  { month: 5, lang: "Go", icon: "🐹", level: "intermediate", tagline: "Simple, fast, concurrent — built for cloud infrastructure.",
+  { month: August, lang: "Go", icon: "🐹", level: "intermediate", tagline: "Simple, fast, concurrent — built for cloud infrastructure.",
     weeks: [
       { title: "Go basics", tasks: "Types, slices, maps, defer, errors" },
       { title: "Goroutines & channels", tasks: "Concurrency model, WaitGroups, select" },
@@ -144,7 +144,7 @@ const curriculum = [
       { title: "Project week", tasks: "Build a concurrent HTTP server" }
     ],
     resources: ["Tour of Go", "Go by Example", "Effective Go", "Gopher Academy"] },
-  { month: 6, lang: "SQL", icon: "🗄️", level: "beginner", tagline: "Query and manage data — essential for every developer.",
+  { month: September, lang: "SQL", icon: "🗄️", level: "beginner", tagline: "Query and manage data — essential for every developer.",
     weeks: [
       { title: "SELECT & filtering", tasks: "WHERE, ORDER BY, LIMIT, LIKE, IN" },
       { title: "Joins & aggregates", tasks: "INNER/LEFT JOIN, GROUP BY, HAVING" },
@@ -152,7 +152,7 @@ const curriculum = [
       { title: "Project week", tasks: "Design and query a multi-table database" }
     ],
     resources: ["SQLZoo", "Mode SQL Tutorial", "PostgreSQL Docs", "pgexercises.com"] },
-  { month: 7, lang: "Kotlin", icon: "🎯", level: "intermediate", tagline: "Modern JVM language — pragmatic and concise.",
+  { month: October, lang: "Kotlin", icon: "🎯", level: "intermediate", tagline: "Modern JVM language — pragmatic and concise.",
     weeks: [
       { title: "Kotlin fundamentals", tasks: "val/var, data classes, null safety" },
       { title: "Functional style", tasks: "Lambdas, extensions, collections API" },
@@ -160,7 +160,7 @@ const curriculum = [
       { title: "Project week", tasks: "Build an Android screen or backend API" }
     ],
     resources: ["Kotlin Docs", "Kotlin Koans", "Android Basics", "KotlinConf talks"] },
-  { month: 8, lang: "Haskell", icon: "λ", level: "advanced", tagline: "Pure functional programming — reshape how you think.",
+  { month: November, lang: "Haskell", icon: "λ", level: "advanced", tagline: "Pure functional programming — reshape how you think.",
     weeks: [
       { title: "Pure functions & types", tasks: "Immutability, type inference, pattern match" },
       { title: "Functors & monads", tasks: "Maybe, IO, do-notation" },
@@ -168,7 +168,7 @@ const curriculum = [
       { title: "Project week", tasks: "Build a parser combinator or CLI app" }
     ],
     resources: ["Learn You a Haskell", "Haskell Book", "Advent of Code in HS", "HaskellWiki"] },
-  { month: 9, lang: "C", icon: "🔬", level: "advanced", tagline: "The foundation of modern computing. Go low-level.",
+  { month: December, lang: "C", icon: "🔬", level: "advanced", tagline: "The foundation of modern computing. Go low-level.",
     weeks: [
       { title: "Memory & pointers", tasks: "malloc, free, pointer arithmetic" },
       { title: "Structs & arrays", tasks: "Stack vs heap, sizeof, casting" },
@@ -176,7 +176,7 @@ const curriculum = [
       { title: "Project week", tasks: "Build a shell or memory allocator" }
     ],
     resources: ["CS50", "Beej's C Guide", "K&R C book", "CodeSignal C track"] },
-  { month: 10, lang: "Swift", icon: "🦅", level: "intermediate", tagline: "Apple's language for iOS, macOS & beyond.",
+  { month: January, lang: "Swift", icon: "🦅", level: "intermediate", tagline: "Apple's language for iOS, macOS & beyond.",
     weeks: [
       { title: "Swift syntax", tasks: "Optionals, guard, closures, protocols" },
       { title: "SwiftUI basics", tasks: "Views, state, bindings, navigation" },
@@ -184,7 +184,7 @@ const curriculum = [
       { title: "Project week", tasks: "Build a working iOS screen" }
     ],
     resources: ["Swift.org Tour", "Hacking with Swift", "SwiftUI tutorials", "100 Days of Swift"] },
-  { month: 11, lang: "Elixir", icon: "💧", level: "advanced", tagline: "Fault-tolerant, distributed systems on the BEAM VM.",
+  { month: February, lang: "Elixir", icon: "💧", level: "advanced", tagline: "Fault-tolerant, distributed systems on the BEAM VM.",
     weeks: [
       { title: "Functional Elixir", tasks: "Immutability, pipe operator, pattern match" },
       { title: "Processes & OTP", tasks: "GenServer, Supervisor, PubSub" },
@@ -192,7 +192,7 @@ const curriculum = [
       { title: "Project week", tasks: "Build a real-time Phoenix LiveView app" }
     ],
     resources: ["Elixir School", "Programming Elixir book", "Exercism Elixir", "ElixirConf"] },
-  { month: 12, lang: "Assembly (x86)", icon: "⚡", level: "advanced", tagline: "The final boss — talk directly to the CPU.",
+  { month: March, lang: "Assembly (x86)", icon: "⚡", level: "advanced", tagline: "The final boss — talk directly to the CPU.",
     weeks: [
       { title: "Registers & memory", tasks: "MOV, LEA, stack frames, calling conventions" },
       { title: "Arithmetic & control", tasks: "ADD, SUB, JMP, CMP, conditional jumps" },
